@@ -6,17 +6,31 @@ class Node:
 
 
 class LinkedList:
-    __head: Node = None
-    __tail: Node = None
-    __length: int = 1
-    __current: Node = None
+    def __init__(self):
+        self.__head = None
+        self.__tail = None
+        self.__current = None
+        self.__length: int = 1
+        self.list_data: list = []
+
+    def __add_element(self, data):
+        new = Node(data)
+        self.list_data.append(data)
+        if self.__head:
+            new.previous = self.__tail
+            self.__tail.next = new
+            self.__tail = self.__tail.next
+        else:
+            self.__head = new
+            self.__tail = self.__head
+        self.__length += 1
 
     def add(self, data):
-        if self.__head:
-            self.__tail.next = Node(data)
+        if isinstance(data, list | tuple | set):
+            for d in data:
+                self.__add_element(d)
         else:
-            self.__head = Node(data)
-            self.__tail = self.__head
+            self.__add_element(data)
 
     def __iter__(self):
         self.__current = self.__head
@@ -42,25 +56,26 @@ class LinkedList:
         if key > self.__length:
             raise IndexError('Index is out of range')
         current = self.__head
-        if key == 0:
-            new = Node(value)
-            new.next = current
-            self.__head = new
-        else:
-            while key - 1:
-                current = current.next
-                key -= 1
-            new = Node(value)
-            new.next = current.next
-            current.next = new
-
-    def __len__(self):
-        return self.__length
+        while key:
+            current = current.next
+            key -= 1
+        current.data = value
 
     def __str__(self):
         current = self.__head
         body = []
         while current:
-            body.append(current.data)
+            tmp = current.data
+            if isinstance(tmp, LinkedList):
+                tmp = tmp.list_data
+            body.append(tmp)
             current = current.next
-        return 'LinkedList(%s) at %s' % (body, hex(id(self)))
+        return f'LinkedList: {body}'
+
+    def __add__(self, additive):
+        result = LinkedList()
+        result.add(self.list_data + additive.list_data)
+        return result
+
+    def __len__(self):
+        return self.__length
