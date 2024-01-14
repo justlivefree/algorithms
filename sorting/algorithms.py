@@ -18,12 +18,6 @@ def bubble_sort(arr: NumberList) -> NumberList:
 
 
 def quick_sort_rcu(arr: NumberList) -> NumberList:
-    """
-    Dude, you will got problem if you use that for list of 1.000.000 numbers.
-    There is  fucking limit of fucking recursion... pretty shitty thing.
-    But you can use sys.setrecursionlimit(). I suggest be careful, otherwise
-    it might mess up your program.
-    """
     length = len(arr)
     if length == 1 or arr == []:
         return arr
@@ -41,13 +35,6 @@ def quick_sort_rcu(arr: NumberList) -> NumberList:
     a = quick_sort_rcu(arr[:j]) if j > 0 else []
     c = quick_sort_rcu(arr[j + 1:]) if j + 1 < length else []
     return a + arr[j:j + 1] + c
-
-
-def quick_sort_iter(arr: NumberList) -> NumberList:
-    """
-    TODO: Make iteration version
-    """
-    pass
 
 
 def merge_sort(arr: NumberList) -> NumberList:
